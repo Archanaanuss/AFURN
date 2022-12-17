@@ -563,7 +563,7 @@ const WishlistView = async (req, res) => {
 
       const completeUser = await userData.populate('wishlist.item.productId');
       if (userData.wishlist.item.length === 0) {
-        res.render('user/wishlist', {
+        res.render('user/wishList', {
           isLoggedin,
           category: cat,
           ccount: userData.cart.totalqty,
@@ -573,7 +573,7 @@ const WishlistView = async (req, res) => {
           wempty: true,
         });
       } else {
-        res.render('user/wishlist', {
+        res.render('user/wishList', {
           isLoggedin,
           category: cat,
           ccount: userData.cart.totalqty,
@@ -584,7 +584,7 @@ const WishlistView = async (req, res) => {
         });
       }
     } else {
-      res.render('user/wishlist', {
+      res.render('user/wishList', {
         isLoggedin,
         id: session.userId,
         category: cat,
