@@ -175,9 +175,7 @@
                                                                             </a>
 
                                                                             <div class="product-action-vertical">
-                                                                                <a href="/add-to-wishlist?id=<%=product[i-1]._id%>"
-                                                                                    class="btn-product-icon btn-wishlist "><span>add
-                                                                                        to wishlist</span></a>
+                                                                                <button onclick="addToWishlist('<%=product[i-1]._id%>')" class="btn-product-icon btn-wishlist  border-0 btn-expandable"><span>add to wishlist</span></button>
                                                                                         <input type="hidden" name="id"
                                                                                 value="<%= product[i-1]._id %>">
                                                                             </div><!-- End .product-action-vertical -->

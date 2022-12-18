@@ -7,6 +7,7 @@ const Orders = require('../models/ordersModel');
 const Address = require('../models/addressModel');
 const Offer = require('../models/offerModel');
 const Category = require('../models/categoryModel');
+const { ObjectId } = require('mongodb');
 
 let isLoggedin;
 isLoggedin = false;
@@ -606,7 +607,8 @@ const addToWishlist = async (req, res) => {
       const userData = await User.findById({ _id: session.userId });
       const productData = await Product.findById({ _id: productId });
       userData.addToWishlist(productData);
-      res.redirect('/');
+      res.json({ status: true });
+      
     } else {
       res.redirect('/wishlist');
     }
@@ -782,6 +784,7 @@ const storeOrder = async (req, res) => {
     console.log(error.message);
   }
 };
+
 // payment success
 const paymentSuccess = async (req, res) => {
   try {
@@ -835,6 +838,7 @@ const viewOrder = async (req, res) => {
     session = req.session;
     if (session.userId) {
       const { id } = req.query;
+      const cat = await Category.find();
       const orderData = await Orders.findById({ _id: id });
       const userData = await User.findById({ _id: session.userId });
       await orderData.populate('products.item.productId');
@@ -846,6 +850,8 @@ const viewOrder = async (req, res) => {
         user: userData,
         ccount: userData.cart.totalqty,
         wcount: userData.wishlist.totalqty,
+        category: cat,
+        isLoggedin,
       });
     } else {
       res.redirect('/login');
