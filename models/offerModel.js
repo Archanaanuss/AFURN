@@ -12,7 +12,7 @@ const offerSchema=new mongoose.Schema({
         type:Number,
         required:true
     },
-    ueseBy:[{
+    usedBy:[{
         type:mongoose.Types.ObjectId,
         ref:'user'
     }]

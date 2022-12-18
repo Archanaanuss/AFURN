@@ -339,6 +339,7 @@ const productDetails = async (req, res) => {
         details: productData,
         category: cat,
         isLoggedin,
+        
       });
     }
   } catch (error) {
@@ -688,6 +689,9 @@ const checkOut = async (req, res) => {
       const userData = await User.findById({ _id: session.userId });
       const completeUser = await userData.populate('cart.item.productId');
       const cat = await Category.find();
+      if(session.couponTotal==0){
+        session.couponTotal=userData.cart.totalPrice;
+      }
       res.render('user/checkOut', {
         isLoggedin,
         ccount: userData.cart.totalqty,

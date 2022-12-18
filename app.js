@@ -48,8 +48,8 @@ app.use(
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
 app.get('*', (req, res) => {
-  res.render('404');
-});
+res.render('404');
+ });
 
 // server port setting
 app.listen(port, () => console.log(`server started on ${port}`));
