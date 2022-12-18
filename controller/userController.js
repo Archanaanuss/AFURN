@@ -838,7 +838,7 @@ const viewOrder = async (req, res) => {
     session = req.session;
     if (session.userId) {
       const { id } = req.query;
-      const cat = await Category.find();
+      const cat = await Category.find({});
       const orderData = await Orders.findById({ _id: id });
       const userData = await User.findById({ _id: session.userId });
       await orderData.populate('products.item.productId');
