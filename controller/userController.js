@@ -177,6 +177,7 @@ const userRegister = async (req, res) => {
 
 // confirm oTP
 const ConfirmOTP = async (req, res) => {
+  const cat = await Category.find();
   const userData = await User.findOne({ _id: newUser });
   if (userData) {
     if (req.body.otp == newOtp) {
@@ -390,7 +391,7 @@ const shopView = async (req, res) => {
         product: productData,
         ccount: count.cart.totalqty,
         wcount: count.wishlist.totalqty,
-        category,
+        category:category,
         totalPages: Math.ceil(countpage / limit),
         currentPage: page,
         previous: new Number(page) - 1,
@@ -400,7 +401,7 @@ const shopView = async (req, res) => {
       res.render('user/shopView', {
         isLoggedin,
         product: productData,
-        category,
+        category:category,
         totalPages: Math.ceil(countpage / limit),
         currentPage: page,
         previous: new Number(page) - 1,
@@ -458,7 +459,7 @@ const shopCategory = async (req, res) => {
         ccount: count.cart.totalqty,
         wcount: count.wishlist.totalqty,
         product: productData,
-        category,
+        category:category,
         totalPages: Math.ceil(countpage / limit),
         currentPage: page,
         previous: new Number(page) - 1,
@@ -468,7 +469,7 @@ const shopCategory = async (req, res) => {
       res.render('user/shopView', {
         isLoggedin,
         product: productData,
-        category,
+        category:category,
         totalPages: Math.ceil(countpage / limit),
         currentPage: page,
         previous: new Number(page) - 1,
@@ -484,10 +485,10 @@ const shopCategory = async (req, res) => {
 const viewCart = async (req, res) => {
   try {
     session = req.session;
+    const cat = await Category.find();
     if (session.userId) {
       const userData = await User.findOne({ _id: session.userId });
       const completeUser = await userData.populate('cart.item.productId');
-      const cat = await Category.find();
 
       if (session.couponTotal == 0) {
         // update coupon
@@ -707,7 +708,7 @@ const checkOut = async (req, res) => {
         offer: session.offer,
         couponTotal: session.couponTotal,
         userAddress:addressData,
-        addSelect:selectAddress,
+        addSelect:selectAddress
       });
     } else {
       res.redirect('/');
@@ -795,6 +796,8 @@ const storeOrder = async (req, res) => {
 const paymentSuccess = async (req, res) => {
   try {
     session = req.session;
+    const cat = await Category.find();
+
     if (session.userId) {
       const userData = await User.findById({ _id: session.userId });
       const productData = await Product.find();
@@ -824,7 +827,6 @@ const paymentSuccess = async (req, res) => {
         { multi: true },
       );
       console.log('Order Built and Cart is Empty.');
-      const cat = await Category.find();
       session.couponTotal = 0;
       res.render('user/orderSuccess', {
         ccount: userData.cart.totalqty,
