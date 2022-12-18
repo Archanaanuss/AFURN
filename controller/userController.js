@@ -296,11 +296,11 @@ const addAddress = async (req, res) => {
     if (session.userId) {
       const addressData = Address({
         userId: session.userId,
-        name: req.body.name,
-        lname: req.body.lname,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         country: req.body.country,
-        house: req.body.house,
-        landmark: req.body.landmark,
+        address: req.body.streetAddress,
+        address2: req.body.streetAddress2,
         city: req.body.city,
         state: req.body.state,
         pin: req.body.pin,
@@ -688,8 +688,11 @@ const checkOut = async (req, res) => {
   try {
     session = req.session;
     if (session.userId) {
+      const id=req.query.addressid
       const userData = await User.findById({ _id: session.userId });
       const completeUser = await userData.populate('cart.item.productId');
+      const addressData = await Address.find({ userId: session.userId });
+      const selectAddress= await Address.findOne({_id:id})
       const cat = await Category.find();
       if(session.couponTotal==0){
         session.couponTotal=userData.cart.totalPrice;
@@ -703,6 +706,8 @@ const checkOut = async (req, res) => {
         cartProducts: completeUser.cart,
         offer: session.offer,
         couponTotal: session.couponTotal,
+        userAddress:addressData,
+        addSelect:selectAddress
       });
     } else {
       res.redirect('/');
@@ -751,6 +756,7 @@ const storeOrder = async (req, res) => {
         const orderData = await order.save();
 
         session.currentOrder = orderData._id;
+        console.log(session.currentOrder)
         // console.log('userSession.currentOrder',userSession.currentOrder);
 
         const offerUpdate = await Offer.updateOne(
@@ -911,6 +917,7 @@ const addCoupon = async (req, res) => {
 const returnProduct = async (req, res) => {
   try {
     session = req.session;
+    console.log(session.currentOrder)
     if (session.userId) {
       const { id } = req.query;
       // console.log('id',new String(id));
