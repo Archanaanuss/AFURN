@@ -707,7 +707,7 @@ const checkOut = async (req, res) => {
         offer: session.offer,
         couponTotal: session.couponTotal,
         userAddress:addressData,
-        addSelect:selectAddress
+        addSelect:selectAddress,
       });
     } else {
       res.redirect('/');
