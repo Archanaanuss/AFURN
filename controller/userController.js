@@ -851,7 +851,6 @@ const viewOrder = async (req, res) => {
         ccount: userData.cart.totalqty,
         wcount: userData.wishlist.totalqty,
         category: cat,
-        isLoggedin,
       });
     } else {
       res.redirect('/login');
